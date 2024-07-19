@@ -34,20 +34,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.util.HashMap;
 
-/**
- * A stream based parser for parsing delimited text data from a file or a
- * stream.
- */
+
 public class CsvReader {
-    /**
-     * Double up the text qualifier to represent an occurance of the text
-     * qualifier.
-     */
     public static final int ESCAPE_MODE_DOUBLED = 1;
-    /**
-     * Use a backslash character before the text qualifier to represent an
-     * occurance of the text qualifier.
-     */
     public static final int ESCAPE_MODE_BACKSLASH = 2;
     // this holds all the values for switches that the user is allowed to set
     private final UserSettings userSettings = new UserSettings();
@@ -77,15 +66,6 @@ public class CsvReader {
     private boolean initialized = false;
     private boolean closed = false;
 
-    /**
-     * Creates a {@link com.csvreader.CsvReader CsvReader} object using a file
-     * as the data source.
-     *
-     * @param fileName  The path to the file to use as the data source.
-     * @param delimiter The character to use as the column delimiter.
-     * @param charset   The {@link java.nio.charset.Charset Charset} to use while
-     *                  parsing the data.
-     */
     public CsvReader(String fileName, char delimiter, Charset charset)
             throws FileNotFoundException {
         if (fileName == null) {
@@ -110,37 +90,17 @@ public class CsvReader {
         isQualified = new boolean[values.length];
     }
 
-    /**
-     * Creates a {@link com.csvreader.CsvReader CsvReader} object using a file
-     * as the data source.&nbsp;Uses ISO-8859-1 as the
-     * {@link java.nio.charset.Charset Charset}.
-     *
-     * @param fileName  The path to the file to use as the data source.
-     * @param delimiter The character to use as the column delimiter.
-     */
+    
     public CsvReader(String fileName, char delimiter)
             throws FileNotFoundException {
         this(fileName, delimiter, StandardCharsets.ISO_8859_1);
     }
 
-    /**
-     * Creates a {@link com.csvreader.CsvReader CsvReader} object using a file
-     * as the data source.&nbsp;Uses a comma as the column delimiter and
-     * ISO-8859-1 as the {@link java.nio.charset.Charset Charset}.
-     *
-     * @param fileName The path to the file to use as the data source.
-     */
     public CsvReader(String fileName) throws FileNotFoundException {
         this(fileName, Letters.COMMA);
     }
 
-    /**
-     * Constructs a {@link com.csvreader.CsvReader CsvReader} object using a
-     * {@link java.io.Reader Reader} object as the data source.
-     *
-     * @param inputStream The stream to use as the data source.
-     * @param delimiter   The character to use as the column delimiter.
-     */
+    
     public CsvReader(Reader inputStream, char delimiter) {
         if (inputStream == null) {
             throw new IllegalArgumentException(
@@ -154,52 +114,22 @@ public class CsvReader {
         isQualified = new boolean[values.length];
     }
 
-    /**
-     * Constructs a {@link com.csvreader.CsvReader CsvReader} object using a
-     * {@link java.io.Reader Reader} object as the data source.&nbsp;Uses a
-     * comma as the column delimiter.
-     *
-     * @param inputStream The stream to use as the data source.
-     */
+    
     public CsvReader(Reader inputStream) {
         this(inputStream, Letters.COMMA);
     }
 
-    /**
-     * Constructs a {@link com.csvreader.CsvReader CsvReader} object using an
-     * {@link java.io.InputStream InputStream} object as the data source.
-     *
-     * @param inputStream The stream to use as the data source.
-     * @param delimiter   The character to use as the column delimiter.
-     * @param charset     The {@link java.nio.charset.Charset Charset} to use while
-     *                    parsing the data.
-     */
+   
     public CsvReader(InputStream inputStream, char delimiter, Charset charset) {
         this(new InputStreamReader(inputStream, charset), delimiter);
     }
 
-    /**
-     * Constructs a {@link com.csvreader.CsvReader CsvReader} object using an
-     * {@link java.io.InputStream InputStream} object as the data
-     * source.&nbsp;Uses a comma as the column delimiter.
-     *
-     * @param inputStream The stream to use as the data source.
-     * @param charset     The {@link java.nio.charset.Charset Charset} to use while
-     *                    parsing the data.
-     */
+    
     public CsvReader(InputStream inputStream, Charset charset) {
         this(new InputStreamReader(inputStream, charset));
     }
 
-    /**
-     * Creates a {@link com.csvreader.CsvReader CsvReader} object using a string
-     * of data as the source.&nbsp;Uses ISO-8859-1 as the
-     * {@link java.nio.charset.Charset Charset}.
-     *
-     * @param data The String of data to use as the source.
-     * @return A {@link com.csvreader.CsvReader CsvReader} object using the
-     * String of data as the source.
-     */
+    
     public static CsvReader parse(String data) {
         if (data == null) {
             throw new IllegalArgumentException(
@@ -235,43 +165,22 @@ public class CsvReader {
         return rawRecord;
     }
 
-    /**
-     * Gets whether leading and trailing whitespace characters are being trimmed
-     * from non-textqualified column data. Default is true.
-     *
-     * @return Whether leading and trailing whitespace characters are being
-     * trimmed from non-textqualified column data.
-     */
+
     public boolean getTrimWhitespace() {
         return userSettings.TrimWhitespace;
     }
 
-    /**
-     * Sets whether leading and trailing whitespace characters should be trimmed
-     * from non-textqualified column data or not. Default is true.
-     *
-     * @param trimWhitespace Whether leading and trailing whitespace characters should be
-     *                       trimmed from non-textqualified column data or not.
-     */
+
     public void setTrimWhitespace(boolean trimWhitespace) {
         userSettings.TrimWhitespace = trimWhitespace;
     }
 
-    /**
-     * Gets the character being used as the column delimiter. Default is comma,
-     * ','.
-     *
-     * @return The character being used as the column delimiter.
-     */
+    
     public char getDelimiter() {
         return userSettings.Delimiter;
     }
 
-    /**
-     * Sets the character to use as the column delimiter. Default is comma, ','.
-     *
-     * @param delimiter The character to use as the column delimiter.
-     */
+    
     public void setDelimiter(char delimiter) {
         userSettings.Delimiter = delimiter;
     }
@@ -280,13 +189,7 @@ public class CsvReader {
         return userSettings.RecordDelimiter;
     }
 
-    /**
-     * Sets the character to use as the record delimiter.
-     *
-     * @param recordDelimiter The character to use as the record delimiter. Default is
-     *                        combination of standard end of line characters for Windows,
-     *                        Unix, or Mac.
-     */
+    
     public void setRecordDelimiter(char recordDelimiter) {
         useCustomRecordDelimiter = true;
         userSettings.RecordDelimiter = recordDelimiter;
